@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const Display3 = () => {
   const userId = useRef(null);
+  const langUser = useRef(null);
   const userIdRef = useRef();
   const knownLangRef = useRef();
   const [knownLanguages, setKnownLanguages] = useState([]);
@@ -42,17 +43,25 @@ const Display3 = () => {
         }
       );
       const languagesData = await languagesRes.json();
+      console.log(languagesData);
+      const thelanguages =
+        languagesData.length > 0
+          ? languagesData.language.join(",")
+          : "no languages";
+      console.log(thelanguages);
 
       setKnownLanguages((prevlanguageData) => {
         return [
           ...prevlanguageData,
-          { id: user.id, name: user.name, languages: join() },
+          { id: user.id, name: user.name, language: thelanguages },
         ];
       });
     }
   };
 
   const addUserLanguages = async () => {
+    userId.current = userIdRef.current.value;
+    langUser.current = knownLangRef.current.value;
     const res = await fetch(
       import.meta.env.VITE_SERVER + "/lab/users/languages",
       {
@@ -61,8 +70,8 @@ const Display3 = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: userIdRef.current.value,
-          language: knownLangRef.current.value,
+          user_id: userId.current,
+          language: langUser.current,
         }),
       }
     );
@@ -71,7 +80,7 @@ const Display3 = () => {
       throw new Error("cannot add language");
     }
     getKnownLanguages();
-    userId.current = userIdRef.current.value;
+
     userIdRef.current.value = "";
     knownLangRef.current.value = "";
   };
@@ -124,8 +133,9 @@ const Display3 = () => {
         return (
           <UserLanguages
             key={idx}
-            id={userId.current}
-            language={item}
+            id={item.id}
+            language={item.language}
+            name={item.name}
             deleteKnownLanguages={deleteKnownLanguages}
           ></UserLanguages>
         );

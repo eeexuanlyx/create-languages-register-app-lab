@@ -7,6 +7,7 @@ const UserLanguages = (props) => {
       <div className={`row ${styles.user}`}>
         <div className="col-sm-3">{props.id}</div>
         <div className="col-sm-3">{props.language}</div>
+        <div className="col-sm-3">{props.name}</div>
 
         <button
           className="col-sm-2"

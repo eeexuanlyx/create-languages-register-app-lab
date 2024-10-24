@@ -1,7 +1,6 @@
 import React from "react";
 import Languages from "./Languages";
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 const Display2 = () => {
   const [languages, setLanguages] = useState([]);
