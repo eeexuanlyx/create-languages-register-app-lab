@@ -19,6 +19,7 @@ const User = (props) => {
       )}
 
       <div className={`row ${styles.user}`}>
+        <div>{props.id}</div>
         <div className="col-sm-3">{props.name}</div>
         <div className="col-sm-3">{props.age}</div>
         <div className="col-sm-2">{props.country}</div>

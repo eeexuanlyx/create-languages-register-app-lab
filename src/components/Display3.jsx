@@ -4,32 +4,51 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Display3 = () => {
+  const userId = useRef(null);
   const userIdRef = useRef();
   const knownLangRef = useRef();
   const [knownLanguages, setKnownLanguages] = useState([]);
 
+  const [users, setUsers] = useState([]);
+  // const getUserData = async () => {
+  //   try {
+  //     const res = await fetch(import.meta.env.VITE_SERVER + "/lab/users");
+
+  //     if (!res.ok) {
+  //       throw new Error("getting data error");
+  //     }
+
+  //     const data = await res.json();
+  //     setUsers(data);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // };
+  // for (const user of users) {
+
+  // }
+
   const getKnownLanguages = async () => {
-    try {
-      const res = await fetch(
+    const usersRes = await fetch(import.meta.env.VITE_SERVER + "/lab/users");
+    const usersData = await usersRes.json();
+
+    for (const user of usersData) {
+      const languagesRes = await fetch(
         import.meta.env.VITE_SERVER + "/lab/users/languages",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: props.id,
-          }),
+          heanders: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: user.id }),
         }
       );
+      const languagesData = await languagesRes.json();
 
-      if (!res.ok) {
-        throw new Error("getting data error");
-      }
-      const data = await res.json();
-      setKnownLanguages(data);
-    } catch (error) {
-      console.error(error.message);
+      setKnownLanguages((prevlanguageData) => {
+        return [
+          ...prevlanguageData,
+          { id: user.id, name: user.name, languages: join() },
+        ];
+      });
     }
   };
 
@@ -52,6 +71,7 @@ const Display3 = () => {
       throw new Error("cannot add language");
     }
     getKnownLanguages();
+    userId.current = userIdRef.current.value;
     userIdRef.current.value = "";
     knownLangRef.current.value = "";
   };
@@ -74,9 +94,9 @@ const Display3 = () => {
     getKnownLanguages();
   };
 
-  useEffect(() => {
-    getKnownLanguages();
-  }, []);
+  // useEffect(() => {
+  //   getKnownLanguages();
+  // }, []);
 
   return (
     <div>
@@ -99,16 +119,14 @@ const Display3 = () => {
         <div className="col-md-3">User ID</div>
         <div className="col-md-3">Known Languages</div>
       </div>
-      {knownLanguages.map((item) => {
+      {JSON.stringify(knownLanguages)}
+      {knownLanguages.map((item, idx) => {
         return (
           <UserLanguages
-            key={item.id}
-            id={item.user_id}
-            language={item.languages}
-            getKnownLanguages={getKnownLanguages}
+            key={idx}
+            id={userId.current}
+            language={item}
             deleteKnownLanguages={deleteKnownLanguages}
-            userIdRef={userIdRef}
-            knownLangRef={knownLangRef}
           ></UserLanguages>
         );
       })}
