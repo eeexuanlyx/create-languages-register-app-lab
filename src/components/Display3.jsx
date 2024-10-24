@@ -1,6 +1,7 @@
 import React from "react";
 import UserLanguages from "./UserLanguages";
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Display3 = () => {
   const userIdRef = useRef();
@@ -10,13 +11,21 @@ const Display3 = () => {
   const getKnownLanguages = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_SERVER + "/lab/users/languages"
+        import.meta.env.VITE_SERVER + "/lab/users/languages",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: props.id,
+          }),
+        }
       );
 
       if (!res.ok) {
         throw new Error("getting data error");
       }
-
       const data = await res.json();
       setKnownLanguages(data);
     } catch (error) {
@@ -98,6 +107,8 @@ const Display3 = () => {
             language={item.languages}
             getKnownLanguages={getKnownLanguages}
             deleteKnownLanguages={deleteKnownLanguages}
+            userIdRef={userIdRef}
+            knownLangRef={knownLangRef}
           ></UserLanguages>
         );
       })}
