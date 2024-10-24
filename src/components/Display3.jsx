@@ -38,16 +38,14 @@ const Display3 = () => {
         import.meta.env.VITE_SERVER + "/lab/users/languages",
         {
           method: "POST",
-          heanders: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ user_id: user.id }),
         }
       );
       const languagesData = await languagesRes.json();
       console.log(languagesData);
       const thelanguages =
-        languagesData.length > 0
-          ? languagesData.language.join(",")
-          : "no languages";
+        languagesData.length > 0 ? languagesData.join(",") : "no languages";
       console.log(thelanguages);
 
       setKnownLanguages((prevlanguageData) => {
@@ -85,7 +83,7 @@ const Display3 = () => {
     knownLangRef.current.value = "";
   };
 
-  const deleteKnownLanguages = async (language) => {
+  const deleteKnownLanguages = async (idx) => {
     const res = await fetch(
       import.meta.env.VITE_SERVER + "/lab/users/languages",
       {
