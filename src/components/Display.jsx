@@ -53,7 +53,7 @@ const Display = () => {
       headers: { "Content-Type": "application/json" },
     });
     if (!res.ok) {
-      throw new Error("cannot delete book");
+      throw new Error("cannot delete user");
     }
     getData();
   };

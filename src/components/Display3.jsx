@@ -10,52 +10,36 @@ const Display3 = () => {
   const knownLangRef = useRef();
   const [knownLanguages, setKnownLanguages] = useState([]);
 
-  const [users, setUsers] = useState([]);
-  // const getUserData = async () => {
-  //   try {
-  //     const res = await fetch(import.meta.env.VITE_SERVER + "/lab/users");
-
-  //     if (!res.ok) {
-  //       throw new Error("getting data error");
-  //     }
-
-  //     const data = await res.json();
-  //     setUsers(data);
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
-  // for (const user of users) {
-
-  // }
-
   const getKnownLanguages = async () => {
-    const usersRes = await fetch(import.meta.env.VITE_SERVER + "/lab/users");
-    const usersData = await usersRes.json();
+    try {
+      const usersRes = await fetch(import.meta.env.VITE_SERVER + "/lab/users");
+      const usersData = await usersRes.json();
 
-    for (const user of usersData) {
-      const languagesRes = await fetch(
-        import.meta.env.VITE_SERVER + "/lab/users/languages",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: user.id }),
-        }
-      );
-      const languagesData = await languagesRes.json();
-      console.log(languagesData);
-      const thelanguages =
-        languagesData.length > 0 ? languagesData.join(",") : "no languages";
-      console.log(thelanguages);
-
-      setKnownLanguages((prevlanguageData) => {
-        return [
-          ...prevlanguageData,
-          { id: user.id, name: user.name, language: thelanguages },
-        ];
+      const languagesPromises = usersData.map(async (user) => {
+        const languagesRes = await fetch(
+          import.meta.env.VITE_SERVER + "/lab/users/languages",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: user.id }),
+          }
+        );
+        const languagesData = await languagesRes.json();
+        const thelanguages =
+          languagesData.length > 0 ? languagesData.join(",") : "no languages";
+        return { id: user.id, name: user.name, language: thelanguages };
       });
+
+      const languagesArray = await Promise.all(languagesPromises);
+      setKnownLanguages(languagesArray); // Completely replace the old state
+    } catch (error) {
+      console.error(error.message);
     }
   };
+
+  useEffect(() => {
+    getKnownLanguages();
+  }, []);
 
   const addUserLanguages = async () => {
     userId.current = userIdRef.current.value;
@@ -82,28 +66,6 @@ const Display3 = () => {
     userIdRef.current.value = "";
     knownLangRef.current.value = "";
   };
-
-  const deleteKnownLanguages = async (idx) => {
-    const res = await fetch(
-      import.meta.env.VITE_SERVER + "/lab/users/languages",
-      {
-        method: "DELETE",
-        body: JSON.stringify({
-          language: language,
-          user_id: id,
-        }),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("cannot delete language");
-    }
-    getKnownLanguages();
-  };
-
-  // useEffect(() => {
-  //   getKnownLanguages();
-  // }, []);
 
   return (
     <div>
@@ -134,7 +96,7 @@ const Display3 = () => {
             id={item.id}
             language={item.language}
             name={item.name}
-            deleteKnownLanguages={deleteKnownLanguages}
+            getKnownLanguages={getKnownLanguages}
           ></UserLanguages>
         );
       })}
