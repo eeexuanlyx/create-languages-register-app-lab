@@ -7,7 +7,7 @@ const Languages = (props) => {
       <div className={`row ${styles.book}`}>
         <div className="col-sm-3">{props.language}</div>
         <button
-          className="col-sm-2"
+          className="col-sm-3"
           onClick={() => props.deleteLanguage(props.language)}
         >
           delete

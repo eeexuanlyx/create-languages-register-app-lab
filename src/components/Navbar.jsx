@@ -1,22 +1,23 @@
 import { Link } from "react-router-dom";
+import styles from "./Nav.module.css";
 
 const NavBar = () => {
   return (
     <nav>
-      <ul>
-        <li>
+      <div className={styles.navlink}>
+        <div className={styles.boxlink}>
           <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/display">User List</Link>
-        </li>
-        <li>
-          <Link to="/display2">Add Language</Link>
-        </li>
-        <li>
-          <Link to="/display3">User Language</Link>
-        </li>
-      </ul>
+        </div>
+        <div className={styles.boxlink}>
+          <Link to="/UserList">User List</Link>
+        </div>
+        <div className={styles.boxlink}>
+          <Link to="/LanguageList">Add Language</Link>
+        </div>
+        <div className={styles.boxlink}>
+          <Link to="/UserAndLanguages">User's Language Background</Link>
+        </div>
+      </div>
     </nav>
   );
 };

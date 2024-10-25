@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/Navbar";
-import Display from "./components/Display";
-import Display2 from "./components/Display2";
-import Display3 from "./components/Display3";
+import UserList from "./components/UserList";
+import LanguageList from "./components/LanguageList";
+import UserAndLanguages from "./components/UserAndLanguages";
 
 function App() {
   return (
@@ -18,9 +18,9 @@ function App() {
             </main>
           }
         />
-        <Route path="/display" element={<Display />} />
-        <Route path="/display2" element={<Display2 />} />
-        <Route path="/display3" element={<Display3 />} />
+        <Route path="/UserList" element={<UserList />} />
+        <Route path="/LanguageList" element={<LanguageList />} />
+        <Route path="/UserAndLanguages" element={<UserAndLanguages />} />
       </Routes>
     </>
   );

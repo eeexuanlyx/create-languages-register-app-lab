@@ -1,3 +1,7 @@
 .user {
-  border: 1px solid black;
+  border: 1px solid rgb(227, 241, 241);
+}
+
+.lang {
+  word-break: break-word;
 }

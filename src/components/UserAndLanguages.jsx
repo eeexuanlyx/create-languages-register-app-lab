@@ -3,7 +3,7 @@ import UserLanguages from "./UserLanguages";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const Display3 = () => {
+const UserAndLanguages = () => {
   const userId = useRef(null);
   const langUser = useRef(null);
   const userIdRef = useRef();
@@ -26,12 +26,12 @@ const Display3 = () => {
         );
         const languagesData = await languagesRes.json();
         const thelanguages =
-          languagesData.length > 0 ? languagesData.join(",") : "no languages";
+          languagesData.length > 0 ? languagesData.join(", ") : "no languages";
         return { id: user.id, name: user.name, language: thelanguages };
       });
 
       const languagesArray = await Promise.all(languagesPromises);
-      setKnownLanguages(languagesArray); // Completely replace the old state
+      setKnownLanguages(languagesArray);
     } catch (error) {
       console.error(error.message);
     }
@@ -69,6 +69,7 @@ const Display3 = () => {
 
   return (
     <div>
+      <h1>User's Language Background</h1>
       <input
         type="text"
         ref={userIdRef}
@@ -84,11 +85,12 @@ const Display3 = () => {
       <button className="col-md-3" onClick={addUserLanguages}>
         add
       </button>
+      <br></br>
       <div className="row">
-        <div className="col-md-3">User ID</div>
-        <div className="col-md-3">Known Languages</div>
+        <div className="col-sm-1">ID</div>
+        <div className="col-sm-3">Languages</div>
+        <div className="col-sm-2">Name</div>
       </div>
-      {JSON.stringify(knownLanguages)}
       {knownLanguages.map((item, idx) => {
         return (
           <UserLanguages
@@ -104,4 +106,4 @@ const Display3 = () => {
   );
 };
 
-export default Display3;
+export default UserAndLanguages;

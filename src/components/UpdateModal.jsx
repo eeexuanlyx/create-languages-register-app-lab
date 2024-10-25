@@ -70,11 +70,11 @@ const OverLay = (props) => {
         <br />
         <div className="row">
           <div className="col-md-3">
-            <button className="col-md-3" onClick={updateUser}>
+            <button className="col-md-4" onClick={updateUser}>
               update
             </button>
             <button
-              className="col-md-3"
+              className="col-md-4"
               onClick={() => props.setShowUpdateModal(false)}
             >
               cancel

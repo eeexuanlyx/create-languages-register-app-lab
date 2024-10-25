@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import User from "./User";
 import { Link } from "react-router-dom";
 
-const Display = () => {
+const UserList = () => {
   const [user, setUser] = useState([]);
   const nameRef = useRef();
   const ageRef = useRef();
@@ -114,4 +114,4 @@ const Display = () => {
   );
 };
 
-export default Display;
+export default UserList;

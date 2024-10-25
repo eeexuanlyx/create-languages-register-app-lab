@@ -2,7 +2,7 @@ import React from "react";
 import Languages from "./Languages";
 import { useState, useRef, useEffect } from "react";
 
-const Display2 = () => {
+const LanguageList = () => {
   const [languages, setLanguages] = useState([]);
   const langRef = useRef();
   const getLanguage = async () => {
@@ -21,6 +21,17 @@ const Display2 = () => {
   };
 
   const addLanguage = async () => {
+    const newLanguage = langRef.current.value.trim();
+
+    const isLanguageExists = languages.some(
+      (item) => item.language.toLowerCase() === newLanguage.toLowerCase()
+    );
+
+    if (isLanguageExists) {
+      alert("This language already exists.");
+      return; // Exit the function if the language already exists
+    }
+
     const res = await fetch(import.meta.env.VITE_SERVER + "/lab/languages", {
       method: "PUT",
       headers: {
@@ -58,6 +69,7 @@ const Display2 = () => {
   }, []);
   return (
     <div>
+      <h1>Language List</h1>
       <input
         type="text"
         ref={langRef}
@@ -82,4 +94,4 @@ const Display2 = () => {
   );
 };
 
-export default Display2;
+export default LanguageList;

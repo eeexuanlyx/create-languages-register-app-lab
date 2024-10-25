@@ -1,0 +1,12 @@
+.navlink {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.boxlink {
+  text-align: center;
+  font-size: 1.2em;
+  width: 100%;
+  background-color: beige;
+}

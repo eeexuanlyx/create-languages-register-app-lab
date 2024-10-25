@@ -5,17 +5,15 @@ const UserLanguages = (props) => {
   const deleteLangRef = useRef();
 
   const deleteKnownLanguages = async () => {
-    const id = props.id; // Get the user ID from props
     const language = deleteLangRef.current.value; // Get the language from ref
-    console.log("Deleting Language:", { id, language });
 
     const res = await fetch(
       import.meta.env.VITE_SERVER + "/lab/users/languages",
       {
         method: "DELETE",
         body: JSON.stringify({
-          user_id: id, // Use the user ID
-          language: language, // Use the language
+          user_id: props.id, //from knownLanguages
+          language: language,
         }),
         headers: { "Content-Type": "application/json" },
       }
@@ -23,9 +21,7 @@ const UserLanguages = (props) => {
 
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(
-        `cannot delete language: ${errorData.message || res.statusText}`
-      );
+      throw new Error(`cannot delete language: ${errorData.message}`);
     }
 
     props.getKnownLanguages(); // Refresh the languages list
@@ -34,10 +30,9 @@ const UserLanguages = (props) => {
 
   return (
     <div className={`row ${styles.user}`}>
-      <div className="col-sm-3">{props.id}</div>
-      <div className="col-sm-3">{props.language}</div>
-      <div className="col-sm-3">{props.name}</div>
-
+      <div className="col-sm-1">{props.id}</div>
+      <div className="col-sm-3 lang">{props.language}</div>
+      <div className="col-sm-2">{props.name}</div>
       <input
         type="text"
         ref={deleteLangRef}
